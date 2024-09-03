@@ -1,0 +1,39 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+// school model
+
+model School {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  slug String @unique
+  email String @unique
+  phone String @unique
+  logo  String
+  medium String
+  address Address? 
+  established String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+}
+
+model Address {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  location String
+  city String
+  pin String
+  state String
+  country String
+  school  School @relation(fields: [schoolId], references: [id], onDelete:Cascade)
+  schoolId String @unique @db.ObjectId
+}
